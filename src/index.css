@@ -1,2 +1,7 @@
 @import "tailwindcss";
 
+/* styles.css */
+#tasklist::-webkit-scrollbar {
+  display: none;
+}
+

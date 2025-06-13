@@ -5,7 +5,7 @@ import EmployeeDashboard from './components/Dashboard/EmployeeDashboard';
 const App = () => {
   return (
     <>
-      <Login/>  {/* ✅ Fixed: Now uppercase */}
+      {/* <Login/>   */}
       <EmployeeDashboard/>
     </>
   );
