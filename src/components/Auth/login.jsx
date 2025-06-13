@@ -13,11 +13,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100">
+    <div className="min-h-screen w-full h-14 bg-linear-to-r from-cyan-500 to-blue-500">
       {/* Header */}
-      <header className="bg-blue-500 text-white p-4 shadow-md">
-        <h1 className="text-4xl font-bold text-center">Employee Management System</h1>
-      </header>
+      <header className="bg-white text-blue-600 p-5 shadow-md">
+  <h1 className="text-4xl font-bold text-center">Employee Management System</h1>
+</header>
 
       {/* Main Content - Full screen centered login form */}
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-4">
@@ -27,7 +27,7 @@ const Login = () => {
             
             <form onSubmit={submitHandler} className="space-y-8">
               <div>
-                <label htmlFor="email" className="block text-xl font-medium text-gray-700 mb-3">
+                <label htmlFor="email" className="block text-xl font-medium text-gray-700 mb-5">
                   Email Address
                 </label>
                 <input
@@ -41,7 +41,7 @@ const Login = () => {
               </div>
               
               <div>
-                <label htmlFor="password" className="block text-xl font-medium text-gray-700 mb-3">
+                <label htmlFor="password" className="block text-xl font-medium text-gray-700 mb-5">
                   Password
                 </label>
                 <input
