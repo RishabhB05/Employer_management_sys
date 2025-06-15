@@ -1,22 +1,21 @@
-import React, { useEffect } from 'react';
-import Login from './components/Auth/login'; // Path is correct if file exists
+import React, { useEffect, useState } from 'react';
+import Login from './components/Auth/login';
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard';
 import AdminDashboard from './components/Dashboard/AdminDashboard';
 import AdminTaskView from './pages/AdminTaskView';
-import { getLocalStorage, setLocalStorage } from './pages/utils/localStorage';
+//  import { getLocalStorage, setLocalStorage } from './pages/utils/localStorage';
 
 const App = () => {
+  // Move useState to the component level
+  const [user, setUser] = useState(null);
 
-  useEffect(()=>{
-    // setLocalStorage()
-    getLocalStorage();
-
-  },)
-
+  useEffect(() => {
+   
+  }, []); 
 
   return (
     <>
-      <Login/>  
+      {!user ? <Login /> : null}
       {/* <EmployeeDashboard/> */}
       {/* <AdminDashboard/> */}
       {/* <AdminTaskView/> */}
