@@ -9,15 +9,27 @@ const App = () => {
   // Move useState to the component level
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-   
-  }, []); 
+   const handleLogin = (email,password)=>{
+       if(email == 'admin@me.com' && password == '123'){
+            setUser('admin')
+            console.log(user);
+       }else if(email == 'user@me.com' && password == '123'){
+            setUser('employee')
+            console.log(user);
+       }
+       else{
+        alert('invalid credentials')
+       }
+   }
+
+  
+ 
 
   return (
     <>
-      {!user ? <Login /> : null}
-      {/* <EmployeeDashboard/> */}
-      {/* <AdminDashboard/> */}
+      {!user ? <Login handleLogin= {handleLogin} /> : null}
+      {user == 'admin' ? <AdminDashboard/> : <EmployeeDashboard/>}
+       
       {/* <AdminTaskView/> */}
     </>
   );
