@@ -1,24 +1,24 @@
-import React from 'react'
+import React from 'react';
 
 const AdminTaskView = () => {
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-12"> {/* Increased margin */}
+      <div className="flex justify-between items-center mb-12">
         <h1 className="text-4xl font-bold text-white">Admin Task Dashboard</h1>
         <div className="text-4xl text-gray-400">Tasks assigned by you</div>
       </div>
 
       {/* Task List */}
-      <div className="space-y-6 overflow-auto"> {/* Increased spacing */}
+      <div className="space-y-6 overflow-auto">
         {/* Task Card 1 */}
-        <div className="bg-gray-800 p-8 rounded-lg border-l-8 border-red-500 hover:bg-gray-750 transition-colors"> {/* Increased padding and border */}
-          <div className="grid grid-cols-4 gap-8 items-center text-white"> {/* Increased gap */}
+        <div className="bg-gray-800 p-8 rounded-lg border-l-8 border-red-500 hover:bg-gray-750 transition-colors">
+          <div className="grid grid-cols-4 gap-8 items-center text-white">
             <div className="text-4xl font-medium">Make a UI design</div>
             <div className="text-4xl text-gray-300">Design Team</div>
             <div className="text-4xl text-gray-400">Build a responsive UI</div>
             <div className="flex justify-end">
-              <span className="bg-red-500 text-white px-6 py-3 rounded-full text-4xl"> {/* Increased size */}
+              <span className="bg-red-500 text-white px-6 py-3 rounded-full text-4xl">
                 Pending
               </span>
             </div>
@@ -54,7 +54,7 @@ const AdminTaskView = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminTaskView
+export default AdminTaskView;

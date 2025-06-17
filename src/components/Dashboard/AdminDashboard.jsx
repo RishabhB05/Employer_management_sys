@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                 type="submit"
                 className="bg-[#F39C12] hover:bg-[#E05555] text-white font-medium px-6 py-3 rounded-lg transition"
               >
-                Create Task
+                Create Task 
               </button>
             </div>
           </form>
