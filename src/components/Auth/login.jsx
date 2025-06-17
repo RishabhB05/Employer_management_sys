@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+const Login = (props) => {
+
+
+
+
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log("email is ", email);
-    console.log("password is ", password);
-    setEmail("");
-    setPassword("");
-  };
-
+ const submitHandler = (e) => {
+  e.preventDefault();
+  props.handleLogin(email.trim().toLowerCase(), password.trim());  // Added trim() and toLowerCase()
+  setEmail("");
+  setPassword("");
+};
   return (
     <div className="min-h-screen w-full h-14 bg-linear-to-r from-cyan-500 to-blue-500">
       {/* Header */}
