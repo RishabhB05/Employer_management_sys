@@ -11,9 +11,22 @@ import { AuthContext } from './context/AuthProvider';
 const App = () => {
   // Move useState to the component level
   const [user, setUser] = useState(null);
+  const[loggedInUserData , setLoggedInUserData] = useState(null)
 
   const authdata = useContext(AuthContext);
-  console.log(authdata);
+  
+
+  //  useEffect(()=>{
+  //      if(authdata){
+  //       const loggedInUser = localStorage.getItem("LoggedInUser")
+  //       if(loggedInUser){
+  //         setUser(loggedInUser.role);
+  //       }
+  //      }
+  //  })
+
+
+
 
 const handleLogin = (email, password) => {
   // Trim inputs to avoid whitespace issues
@@ -23,6 +36,7 @@ const handleLogin = (email, password) => {
   // Check admin first
   if (email === 'admin@me.com' && password === '123') {
     setUser('admin');
+    localStorage.setItem('loggedInUser' , JSON.stringify({role:'admin'}))
     return;
   }
 
@@ -34,7 +48,11 @@ const handleLogin = (email, password) => {
     );
 
     if (foundEmployee) {
-      setUser('employee');
+      setUser( 'employee');
+      setLoggedInUserData(foundEmployee);
+
+      localStorage.setItem('loggedInUser' , JSON.stringify({role:'employee'}))
+
       return;
     }
   }
@@ -49,7 +67,7 @@ const handleLogin = (email, password) => {
     <>
     {!user && <Login handleLogin={handleLogin} />}
     {user === 'admin' && <AdminDashboard />}
-    {user === 'employee' && <EmployeeDashboard />}
+      {user === 'employee' && <EmployeeDashboard data={loggedInUserData} />}
        
       {/* <AdminTaskView/> */}
     </>
@@ -57,4 +75,3 @@ const handleLogin = (email, password) => {
 };
 
 export default App;   
-// this is contribution ndund

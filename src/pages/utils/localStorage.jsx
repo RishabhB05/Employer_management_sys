@@ -1,10 +1,12 @@
 const employees = [
   {
     "id": 1,
+    "firstName": "John",
     "email": "employee1@company.com",
     "password": "123",
     "tasks": [
       {
+        "taskNumber": 1,
         "active": true,
         "new": true,
         "completed": false,
@@ -15,6 +17,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 2,
         "active": true,
         "new": false,
         "completed": false,
@@ -25,6 +28,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 3,
         "active": false,
         "new": false,
         "completed": true,
@@ -35,6 +39,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 4,
         "active": true,
         "new": false,
         "completed": false,
@@ -44,14 +49,23 @@ const employees = [
         "date": "2023-06-18",
         "priority": "high"
       }
-    ]
+    ],
+    "taskCounts": {
+      "total": 4,
+      "active": 3,
+      "new": 1,
+      "completed": 1,
+      "failed": 1
+    }
   },
   {
     "id": 2,
+    "firstName": "Sarah",
     "email": "employee2@company.com",
     "password": "123",
     "tasks": [
       {
+        "taskNumber": 1,
         "active": true,
         "new": true,
         "completed": false,
@@ -62,6 +76,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 2,
         "active": true,
         "new": false,
         "completed": false,
@@ -72,6 +87,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 3,
         "active": false,
         "new": false,
         "completed": true,
@@ -81,14 +97,23 @@ const employees = [
         "date": "2023-06-12",
         "priority": "low"
       }
-    ]
+    ],
+    "taskCounts": {
+      "total": 3,
+      "active": 2,
+      "new": 1,
+      "completed": 1,
+      "failed": 0
+    }
   },
   {
     "id": 3,
+    "firstName": "Michael",
     "email": "employee3@company.com",
     "password": "123",
     "tasks": [
       {
+        "taskNumber": 1,
         "active": true,
         "new": false,
         "completed": false,
@@ -99,6 +124,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 2,
         "active": true,
         "new": true,
         "completed": false,
@@ -109,6 +135,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 3,
         "active": false,
         "new": false,
         "completed": true,
@@ -119,6 +146,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 4,
         "active": false,
         "new": false,
         "completed": false,
@@ -129,6 +157,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 5,
         "active": true,
         "new": false,
         "completed": false,
@@ -138,14 +167,23 @@ const employees = [
         "date": "2023-06-28",
         "priority": "high"
       }
-    ]
+    ],
+    "taskCounts": {
+      "total": 5,
+      "active": 3,
+      "new": 1,
+      "completed": 1,
+      "failed": 1
+    }
   },
   {
     "id": 4,
+    "firstName": "Emily",
     "email": "employee4@company.com",
     "password": "123",
     "tasks": [
       {
+        "taskNumber": 1,
         "active": true,
         "new": true,
         "completed": false,
@@ -156,6 +194,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 2,
         "active": true,
         "new": false,
         "completed": false,
@@ -166,6 +205,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 3,
         "active": false,
         "new": false,
         "completed": true,
@@ -176,6 +216,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 4,
         "active": true,
         "new": false,
         "completed": false,
@@ -186,6 +227,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 5,
         "active": false,
         "new": false,
         "completed": true,
@@ -196,6 +238,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 6,
         "active": true,
         "new": true,
         "completed": false,
@@ -205,14 +248,23 @@ const employees = [
         "date": "2023-06-27",
         "priority": "high"
       }
-    ]
+    ],
+    "taskCounts": {
+      "total": 6,
+      "active": 4,
+      "new": 2,
+      "completed": 2,
+      "failed": 0
+    }
   },
   {
     "id": 5,
+    "firstName": "David",
     "email": "employee5@company.com",
     "password": "123",
     "tasks": [
       {
+        "taskNumber": 1,
         "active": true,
         "new": false,
         "completed": false,
@@ -223,6 +275,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 2,
         "active": true,
         "new": true,
         "completed": false,
@@ -233,6 +286,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 3,
         "active": false,
         "new": false,
         "completed": true,
@@ -243,6 +297,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 4,
         "active": true,
         "new": false,
         "completed": false,
@@ -253,6 +308,7 @@ const employees = [
         "priority": "high"
       },
       {
+        "taskNumber": 5,
         "active": false,
         "new": false,
         "completed": false,
@@ -263,6 +319,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 6,
         "active": true,
         "new": false,
         "completed": false,
@@ -273,6 +330,7 @@ const employees = [
         "priority": "medium"
       },
       {
+        "taskNumber": 7,
         "active": false,
         "new": false,
         "completed": true,
@@ -283,6 +341,7 @@ const employees = [
         "priority": "low"
       },
       {
+        "taskNumber": 8,
         "active": true,
         "new": true,
         "completed": false,
@@ -292,29 +351,41 @@ const employees = [
         "date": "2023-06-30",
         "priority": "high"
       }
-    ]
+    ],
+    "taskCounts": {
+      "total": 8,
+      "active": 5,
+      "new": 2,
+      "completed": 2,
+      "failed": 1
+    }
   }
-]
+];
 
 const admin = [  
   {
     "id": 100,
+    "firstName": "Rishabh",
     "email": "admin@company.com",
-    "password": "123" 
+    "password": "123",
+    "taskCounts": {
+      "total": 0,
+      "active": 0,
+      "new": 0,
+      "completed": 0,
+      "failed": 0
+    }
   }
-]
+];
 
-
-
-
-export const setLocalStorage=()=>{
-    localStorage.setItem('employees',JSON.stringify(employees ) )
-    localStorage.setItem('admin',JSON.stringify(admin) )
-}
+export const setLocalStorage = () => {
+  localStorage.setItem('employees', JSON.stringify(employees));
+  localStorage.setItem('admin', JSON.stringify(admin));
+};
 
 export const getLocalStorage = () => {
-   return {  
-     employees: JSON.parse(localStorage.getItem('employees')) || [],
-     admin: JSON.parse(localStorage.getItem('admin')) || null
-   };
-}
+  return {  
+    employees: JSON.parse(localStorage.getItem('employees')) || [],
+    admin: JSON.parse(localStorage.getItem('admin')) || null
+  };
+};
