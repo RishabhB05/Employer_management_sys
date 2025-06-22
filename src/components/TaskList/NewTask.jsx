@@ -1,15 +1,29 @@
 import React from 'react'
 
-const NewTask = () => {
+const NewTask = ({data}) => {
+
+    const getPriorityColor = () => {
+    switch(data.priority?.toLowerCase()) {
+      case 'high':
+        return 'bg-red-500'; // Red for high priority
+      case 'medium':
+        return 'bg-orange-500'; // Orange for medium priority
+      case 'low':
+        return 'bg-yellow-500'; // Yellow for low priority
+      default:
+        return 'bg-gray-500'; // Default color if priority isn't specified
+    }
+  };
+
   return (
     <>
             <div className='h-200 flex-shrink-0 p-5 w-200 bg-[#F8F9FA] rounded-xl border border-[#E9ECEF]'>
             <div className='flex justify-between items-center py-10'>
-                <h3 className='bg-[#F39C12] text-white text-4xl px-3 py-1 rounded-lg'>Medium</h3>
-                <h4 className='text-4xl font-semibold text-[#343A40]'>20 Feb 2024</h4>
+                 <h3 className={`${getPriorityColor()} text-white text-4xl px-3 py-1 rounded-lg`}>{data.priority}</h3>
+                <h4 className='text-4xl font-semibold text-[#343A40]'>{data.date}</h4>
             </div>
-            <h1 className='mt-10 text-5xl font-bold text-[#2C3E50]'>Complete the DSA topic- Graph and Dynamic programming</h1>
-            <p className='mt-8 text-4xl text-[#343A40]'>First study the basic and solve questions, solve questions from striver A-Z sheet. If you lack in theory then go for love babbar course it will help you understand the basic theory and will make your concept clear</p>
+            <h1 className='mt-10 text-5xl font-bold text-[#2C3E50]'>{data.title}</h1>
+            <p className='mt-8 text-4xl text-[#343A40]'>{data.description}</p>
           <div className='flex  justify-between mt-20  '>
             <button className='bg-green-500 py-5 px-5 text-2xl rounded-lg'> Accept Task</button>
             <button className='bg-red-500 py-5 px-5 text-2xl rounded-lg' >Reject Task</button>

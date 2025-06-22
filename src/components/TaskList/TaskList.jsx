@@ -1,3 +1,4 @@
+
 import React from 'react'
 import AcceptTask from './AcceptTask'
 import NewTask from './NewTask'
@@ -9,10 +10,25 @@ const TaskList = ({data}) => {
     <>
     <div id='tasklist'  className='h-240 px-4  overflow-x-auto items-center justify-start mt-10 w-full flex gap-5 scrollbar-hide'>
 
-       <AcceptTask/>
-       <NewTask/>
-       <CompleteTask/>
-       <FailedTask/>
+   {data.tasks.map((e, index) => {
+        if(e.active){
+          return <AcceptTask key={`accept-${index}`} task={e} data = {e} />
+        }
+        if(e.completed){
+          return <CompleteTask key={`complete-${index}`} task={e} data = {e}/>
+        }
+        if(e.failed){
+          return <FailedTask key={`failed-${index}`} task={e} data = {e} />
+        }
+        if(e.new){
+          return <NewTask key={`new-${index}`} task={e} data = {e} />
+        }
+        return null;
+      })}
+   
+       
+       
+       
 
 {/*  
          <div className='h-200 flex-shrink-0 p-5 w-200 bg-[#F8F9FA] rounded-xl border border-[#E9ECEF]'>
