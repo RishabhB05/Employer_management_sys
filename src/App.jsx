@@ -16,14 +16,15 @@ const App = () => {
   const authdata = useContext(AuthContext);
   
 
-  //  useEffect(()=>{
-  //      if(authdata){
-  //       const loggedInUser = localStorage.getItem("LoggedInUser")
-  //       if(loggedInUser){
-  //         setUser(loggedInUser.role);
-  //       }
-  //      }
-  //  })
+   useEffect(()=>{
+       if(authdata){
+        const loggedInUser = localStorage.getItem("loggedInUser")
+        console.log(loggedInUser)
+      if(loggedInUser){
+          setUser(loggedInUser.role);
+        }
+       }
+   },[])
 
 
 
@@ -51,7 +52,7 @@ const handleLogin = (email, password) => {
       setUser( 'employee');
       setLoggedInUserData(foundEmployee);
 
-      localStorage.setItem('loggedInUser' , JSON.stringify({role:'employee'}))
+      localStorage.setItem('loggedInUser' , JSON.stringify({role:'employee', data: foundEmployee}))
 
       return;
     }
