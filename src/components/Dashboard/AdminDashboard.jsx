@@ -1,6 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AdminTaskView from '../../pages/AdminTaskView';
 
 const AdminDashboard = () => {
+  
+  
+  const logoutUser = () => {
+    // Clear the user from localStorage
+    localStorage.removeItem('loggedInUser');
+    
+    // Optional: Clear employee data if exists
+    localStorage.removeItem('employeeData');
+    
+    // Refresh the page to reset application state
+    window.location.reload();
+  }
+     
+ const [taskTitle, setTaskTitle] = useState("");
+ const [taskDescription, setTaskDescription] = useState("");
+ const [taskDate, setTaskDate] = useState("");
+ const [formData, setFormData] = useState("");
+ const [formData, setFormData] = useState("");
+ const [formData, setFormData] = useState("");
+   
+  const taskAssigned = ()=>{
+     console.log("clicked")
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault(); 
+    console.log("Task created");
+  };
+
   return (
     <div className='min-h-screen w-full bg-black text-white'>
       
@@ -9,10 +39,10 @@ const AdminDashboard = () => {
         <div className="w-1/5 bg-[#1A1A1A] p-6 border-r border-[#333]">
           <h2 className="text-6xl font-bold mb-20 text-[#F39C12]">Admin Panel</h2>
           <nav className="space-y-4 text-3xl">
-            <a href="#" className="block py-2 px-4 rounded-lg bg-[#2A2A2A] hover:bg-[#333] transition">Dashboard</a>
-            <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Tasks</a>
+            <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] hover:bg-[#333] transition">Dashboard</a>
+            <button onClick={taskAssigned} className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Tasks</button>
             <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Users</a>
-            <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Settings</a>
+            <button onClick={logoutUser} className="block py-2 px-4 rounded-lg hover:bg-red-700 bg-red-500 transition">Logout</button>
           </nav>
         </div>
 
@@ -25,13 +55,17 @@ const AdminDashboard = () => {
             </button>
           </div>
 
+
+
+
           {/* Full-width form */}
-          <form className="bg-[#1A1A1A] rounded-xl shadow-lg p-8 text-3xl">
+       <div>
+        <form onSubmit={submitHandler}  className="bg-[#1A1A1A] rounded-xl shadow-lg p-8 text-3xl">
             <h2 className="text-4xl font-bold mb-6 text-[#F39C12]">Create New Task</h2>
             
             <div className="grid grid-cols-2 gap-8 mb-8">
               <div>
-<label className="block text-4xl font-medium mb-6">Task Title</label>                <input 
+         <label className="block text-4xl font-medium mb-6">Task Title</label>                <input 
                   type="text" 
                   placeholder="Make a UI design"
                   className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
@@ -96,8 +130,27 @@ const AdminDashboard = () => {
               </button>
             </div>
           </form>
+        
+        </div> 
+          
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
       </div>
+
+      <AdminTaskView/>
 
     </div>
   );
