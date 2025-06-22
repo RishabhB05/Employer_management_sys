@@ -18,7 +18,7 @@ const TaskListNumbers = ({data}) => {
       {/* Accepted Task - Teal */}
       <div className='px-10 py-15 w-[42%] bg-[#1ABC9C] rounded-xl'>
         <h2 className='text-5xl font-semibold text-white'>{data.taskCounts.active}</h2>
-        <h3 className='text-3xl font-medium text-white'>Active Task</h3>
+        <h3 className='text-3xl font-medium text-white'>Accepted Task</h3>
       </div>
 
       {/* Failed Task - Coral Red */}
