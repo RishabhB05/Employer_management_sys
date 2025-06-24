@@ -12,20 +12,49 @@ const App = () => {
   // Move useState to the component level
   const [user, setUser] = useState(null);
   const[loggedInUserData , setLoggedInUserData] = useState(null)
-
-  const authdata = useContext(AuthContext);
   
+const [userData , setUserData] = useContext(AuthContext);
 
-   useEffect(()=>{
-       if(authdata){
-        const loggedInUser = localStorage.getItem("loggedInUser")
-        console.log(loggedInUser)
-      if(loggedInUser){
-          setUser(loggedInUser.role);
+  //  useEffect(()=>{
+  //      if(authdata){
+  //       const loggedInUser = localStorage.getItem("loggedInUser")
+  //       console.log(loggedInUser)
+  //     if(loggedInUser){
+  //         setUser(loggedInUser.role);
+  //       }
+  //      }
+  //  },[])
+
+    useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      try {
+        const parsedUser = JSON.parse(loggedInUser);
+        setUser(parsedUser.role);
+        if (parsedUser.data) {
+          setLoggedInUserData(parsedUser.data);
         }
-       }
-   },[])
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
 
+
+//   useEffect(() => {
+//   const loggedInUser = localStorage.getItem("loggedInUser");
+//   if (loggedInUser) {
+//     try {
+//       const parsedUser = JSON.parse(loggedInUser);
+//       setUser(parsedUser.role);
+//       if (parsedUser.data) {
+//         setLoggedInUserData(parsedUser.data);
+//       }
+//     } catch (error) {
+//       console.error("Error parsing user data:", error);
+//     }
+//   }
+// }, [authdata]);
 
 
 
@@ -42,8 +71,8 @@ const handleLogin = (email, password) => {
   }
 
   // Check employees
-  if (authdata?.employees) {
-    const foundEmployee = authdata.employees.find(e => 
+  if (userData?.employees) {
+    const foundEmployee = userData.employees.find(e => 
       e.email.toLowerCase() === email.toLowerCase() && 
       e.password === password
     );
@@ -67,9 +96,9 @@ const handleLogin = (email, password) => {
   return (
     <>
     {!user && <Login handleLogin={handleLogin} />}
-    {user === 'admin' && <AdminDashboard />}
-      {user === 'employee' && <EmployeeDashboard data={loggedInUserData} />}
-       
+    {user === 'admin' && <AdminDashboard changeUser={setUser}  />}
+    {user === 'employee' && <EmployeeDashboard data={loggedInUserData}  changeUser={setUser}  />}
+      
       {/* <AdminTaskView/> */}
     </>
   );

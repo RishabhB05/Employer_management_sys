@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AdminTaskView from '../../pages/AdminTaskView';
+import { AuthContext } from '../../context/AuthProvider';
 
 const AdminDashboard = () => {
   
@@ -14,22 +15,73 @@ const AdminDashboard = () => {
     // Refresh the page to reset application state
     window.location.reload();
   }
-     
+  
+  const taskAssigned = ()=>{
+    console.log("clicked")
+   }
+
+
+const [userData, setUserData] = useContext(AuthContext)
+
  const [taskTitle, setTaskTitle] = useState("");
  const [taskDescription, setTaskDescription] = useState("");
  const [taskDate, setTaskDate] = useState("");
- const [formData, setFormData] = useState("");
- const [formData, setFormData] = useState("");
- const [formData, setFormData] = useState("");
-   
-  const taskAssigned = ()=>{
-     console.log("clicked")
-  }
+ const [assignTo, setAssignTo] = useState("");
+ const [category, setCategory] = useState("");
+ const [priority, setPriority] = useState("");
 
-  const submitHandler = (e) => {
-    e.preventDefault(); 
-    console.log("Task created");
-  };
+   const [newTask, setNewTask] = useState({})
+
+const submitHandler = (e) => {
+    e.preventDefault();
+
+    // Build the new task object directly
+    const task = {
+        taskTitle,
+        taskDescription,
+        assignTo,
+        category,
+        priority,
+        taskDate,
+        active: false,
+        newTask: true,
+        failed: false,
+        completed: false
+    };
+
+    // Defensive: check userData and employees
+    if (!userData || !userData.employees) {
+        console.log("userData not loaded yet");
+        return;
+    }
+
+    // Make a copy to avoid direct mutation
+    const data = userData.employees.map(emp => {
+        if (assignTo === emp.firstName) {
+            // Add task to a new array (immutability)
+            return {
+                ...emp,
+                tasks: [...(emp.tasks || []), task],
+                taskCounts: {
+                    ...emp.taskCounts,
+                    newTask: (emp.taskCounts?.newTask || 0) + 1
+                }
+            };
+        }
+        return emp;
+    });
+
+    setUserData({ employees: data });
+    localStorage.setItem('employees', JSON.stringify(data)); 
+    console.log(data);
+
+    setTaskTitle('');
+    setCategory('');
+    setAssignTo('');
+    setTaskDate('');
+    setTaskDescription('');
+};
+
 
   return (
     <div className='min-h-screen w-full bg-black text-white'>
@@ -59,22 +111,32 @@ const AdminDashboard = () => {
 
 
           {/* Full-width form */}
-       <div>
-        <form onSubmit={submitHandler}  className="bg-[#1A1A1A] rounded-xl shadow-lg p-8 text-3xl">
+    <div>
+      <form onSubmit={submitHandler}  className="bg-[#1A1A1A] rounded-xl shadow-lg p-8 text-3xl">
             <h2 className="text-4xl font-bold mb-6 text-[#F39C12]">Create New Task</h2>
             
-            <div className="grid grid-cols-2 gap-8 mb-8">
-              <div>
-         <label className="block text-4xl font-medium mb-6">Task Title</label>                <input 
-                  type="text" 
-                  placeholder="Make a UI design"
-                  className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
+         <div className="grid grid-cols-2 gap-8 mb-8">
+
+          <div>
+            <label className="block text-4xl font-medium mb-6">Task Title</label>
+
+               <input value = {taskTitle} 
+                   onChange={(e)=>{
+                   setTaskTitle(e.target.value)
+                   }}
+                    type="text" 
+                    placeholder="Make a UI design"
+                    className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
                 />
-              </div>
+          </div>
               
               <div>
                 <label className="block text-4xl font-medium mb-6">Employer Name</label>
-                <input 
+                <input  value={assignTo}
+                        onChange={(e)=>{
+                        setAssignTo(e.target.value)
+                        }}
+                    
                   type="text" 
                   placeholder="Enter employer name"
                   className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
@@ -82,18 +144,28 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+
+
             <div className="mb-8">
               <label className="block text-4xl font-medium mb-6">Description</label>
-              <textarea 
+              <textarea  
+                  value={taskDescription}
+                        onChange={(e)=>{
+                        setTaskDescription(e.target.value)
+                        }}
                 rows={6}
                 className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
               ></textarea>
             </div>
 
             <div className="grid grid-cols-3 gap-8 mb-10">
+
               <div>
                 <label className="block text-4xl font-medium mb-6">Due Date</label>
-                <input 
+                <input value={taskDate}
+                        onChange={(e)=>{
+                        setTaskDate(e.target.value)
+                        }}
                   type="date" 
                   className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
                 />
@@ -101,20 +173,23 @@ const AdminDashboard = () => {
               
               <div>
                 <label className="block text-4xl font-medium mb-6">Priority</label>
-                <select className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]">
-                  <option>Low</option>
-                  <option>Medium</option>
-                  <option>High</option>
-                </select>
+                 <select className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
+                 value={priority}
+                  onChange={(e)=>{ setPriority(e.target.value) }}>
+                   <option>Low</option>
+                   <option>Medium</option>
+                   <option>High</option>
+                 </select>
               </div>
               
               <div>
-                <label className="block text-4xl font-medium mb-6">Status</label>
-                <select className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]">
-                  <option>Pending</option>
-                  <option>In Progress</option>
-                  <option>Completed</option>
-                </select>
+                <label className="block text-4xl font-medium mb-6">Category</label>
+                <input  type='text'   className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
+                  value={category}
+                        onChange={(e)=>{
+                        setCategory(e.target.value)
+                        }}
+                 />
               </div>
             </div>
 

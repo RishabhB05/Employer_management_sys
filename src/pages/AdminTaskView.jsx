@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthProvider';
 
-const AdminTaskView = ({data}) => {
-  const authdata = useContext(AuthContext);
-  console.log(authdata);
+const AdminTaskView = () => {
+  const [userData,setUserData] = useContext(AuthContext);
+  // console.log(authdata);
 
   return (
     <div className="min-h-screen bg-gray-900 p-6">
@@ -31,7 +31,7 @@ const AdminTaskView = ({data}) => {
 
       {/* Task List */}
       <div className="space-y-6 overflow-auto">
-        {authdata.employees.map(function(elem , idx){
+        {userData.employees.map(function(elem , idx){
           
           return(
             <div key={idx} className=" bg-gray-800 p-8 rounded-lg border-l-8 border-red-500 hover:bg-gray-750 transition-colors">

@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { setLocalStorage } from '../../pages/utils/localStorage';
 
-const Header = ({data}) => {
+const Header = (props) => {
 
   const logoutUser = () => {
     // Clear the user from localStorage
-    localStorage.removeItem('loggedInUser');
+    // localStorage.removeItem('loggedInUser');
     
     // Optional: Clear employee data if exists
+    // localStorage.removeItem('employeeData');
+    
+     
+    // Refresh the page to reset application state
+    // window.location.reload();
+    
+     try {
+    localStorage.removeItem('loggedInUser');
     localStorage.removeItem('employeeData');
     
-    // Refresh the page to reset application state
-    window.location.reload();
+    // Ensure changeUser exists before calling it
+    if (typeof props.changeUser === 'function') {
+      props.changeUser('');
+    } else {
+      console.error('changeUser is not a function');
+    }
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
+
+
   }
   
   return (
@@ -20,7 +37,7 @@ const Header = ({data}) => {
         <h1 className='text-4xl md:text-5xl text-gray-700'>
           Hello, <br/>
           <span className='text-5xl md:text-6xl font-semibold text-[#2C3E50]'>
-            {data.firstName} 👋
+            {props.data.firstName} 👋
           </span>
         </h1>
         <p className='text-xl text-gray-500 mt-2'>Welcome to your dashboard</p>
