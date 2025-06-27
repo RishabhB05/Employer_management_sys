@@ -6,14 +6,12 @@ import EmployeeDashboard from './components/Dashboard/EmployeeDashboard';
 import AdminDashboard from './components/Dashboard/AdminDashboard';
 import AdminTaskView from './pages/AdminTaskView';
 import { AuthContext } from './context/AuthProvider';
-//  import { getLocalStorage, setLocalStorage } from './pages/utils/localStorage';
 
 const App = () => {
-  // Move useState to the component level
   const [user, setUser] = useState(null);
-  const[loggedInUserData , setLoggedInUserData] = useState(null)
-  
-const [userData , setUserData] = useContext(AuthContext);
+  const [loggedInUserData, setLoggedInUserData] = useState(null);
+  const [userData, setUserData] = useContext(AuthContext);
+  const [adminView, setAdminView] = useState('dashboard');
 
   //  useEffect(()=>{
   //      if(authdata){
@@ -92,16 +90,23 @@ const handleLogin = (email, password) => {
 
   
  
-
-  return (
+return (
     <>
-    {!user && <Login handleLogin={handleLogin} />}
-    {user === 'admin' && <AdminDashboard changeUser={setUser}  />}
-    {user === 'employee' && <EmployeeDashboard data={loggedInUserData}  changeUser={setUser}  />}
-      
-      {/* <AdminTaskView/> */}
+      {!user && <Login handleLogin={handleLogin} />}
+      {user === 'admin' && adminView === 'dashboard' && (
+        <AdminDashboard changeUser={setUser} openTaskView={() => setAdminView('tasks')} />
+      )}
+      {user === 'admin' && adminView === 'tasks' && (
+        <AdminTaskView />
+      )}
+      {user === 'employee' && (
+        <EmployeeDashboard
+          data={userData?.employees?.find(e => e.email === loggedInUserData?.email)}
+          changeUser={setUser}
+        />
+      )}
     </>
   );
 };
 
-export default App;   
+export default App;

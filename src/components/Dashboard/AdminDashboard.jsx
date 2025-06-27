@@ -2,231 +2,222 @@ import React, { useState, useContext } from 'react';
 import AdminTaskView from '../../pages/AdminTaskView';
 import { AuthContext } from '../../context/AuthProvider';
 
-const AdminDashboard = () => {
-  
-  
+const AdminDashboard = ({ changeUser, openTaskView }) => {
   const logoutUser = () => {
-    // Clear the user from localStorage
     localStorage.removeItem('loggedInUser');
-    
-    // Optional: Clear employee data if exists
     localStorage.removeItem('employeeData');
-    
-    // Refresh the page to reset application state
     window.location.reload();
   }
-  
-  const taskAssigned = ()=>{
-    console.log("clicked")
-   }
 
+  const [userData, setUserData] = useContext(AuthContext);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskDate, setTaskDate] = useState("");
+  const [assignTo, setAssignTo] = useState("");
+  const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState("");
 
-const [userData, setUserData] = useContext(AuthContext)
-
- const [taskTitle, setTaskTitle] = useState("");
- const [taskDescription, setTaskDescription] = useState("");
- const [taskDate, setTaskDate] = useState("");
- const [assignTo, setAssignTo] = useState("");
- const [category, setCategory] = useState("");
- const [priority, setPriority] = useState("");
-
-   const [newTask, setNewTask] = useState({})
-
-const submitHandler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-
-    // Build the new task object directly
     const task = {
-        taskTitle,
-        taskDescription,
-        assignTo,
-        category,
-        priority,
-        taskDate,
-        active: false,
-        newTask: true,
-        failed: false,
-        completed: false
+      title: taskTitle,
+      description: taskDescription,
+      date: taskDate,
+      assignTo,
+      category,
+      priority,
+      active: false,
+      new: true,
+      failed: false,
+      completed: false
     };
 
-    // Defensive: check userData and employees
     if (!userData || !userData.employees) {
-        console.log("userData not loaded yet");
-        return;
+      console.log("userData not loaded yet");
+      return;
     }
 
-    // Make a copy to avoid direct mutation
     const data = userData.employees.map(emp => {
-        if (assignTo === emp.firstName) {
-            // Add task to a new array (immutability)
-            return {
-                ...emp,
-                tasks: [...(emp.tasks || []), task],
-                taskCounts: {
-                    ...emp.taskCounts,
-                    newTask: (emp.taskCounts?.newTask || 0) + 1
-                }
-            };
-        }
-        return emp;
+      if (assignTo === emp.firstName) {
+        return {
+          ...emp,
+          tasks: [...(emp.tasks || []), task],
+          taskCounts: {
+            ...emp.taskCounts,
+            newTask: (emp.taskCounts?.newTask || 0) + 1
+          }
+        };
+      }
+      return emp;
     });
 
     setUserData({ employees: data });
     localStorage.setItem('employees', JSON.stringify(data)); 
-    console.log(data);
-
     setTaskTitle('');
     setCategory('');
     setAssignTo('');
     setTaskDate('');
     setTaskDescription('');
-};
-
+  };
 
   return (
-    <div className='min-h-screen w-full bg-black text-white'>
-      
-      <div className="flex h-[calc(100vh-80px)]"> {/* Full height minus header */}
-        {/* Sidebar - 20% width */}
-        <div className="w-1/5 bg-[#1A1A1A] p-6 border-r border-[#333]">
-          <h2 className="text-6xl font-bold mb-20 text-[#F39C12]">Admin Panel</h2>
-          <nav className="space-y-4 text-3xl">
-            <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] hover:bg-[#333] transition">Dashboard</a>
-            <button onClick={taskAssigned} className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Tasks</button>
-            <a href="#" className="block py-2 px-4 rounded-lg hover:bg-[#2A2A2A] transition">Users</a>
-            <button onClick={logoutUser} className="block py-2 px-4 rounded-lg hover:bg-red-700 bg-red-500 transition">Logout</button>
+    <div className='bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)] min-h-screen w-full text-white'>
+      <div className="flex h-screen font-sans">
+        {/* Sidebar */}
+        <div className="w-64 bg-[#1E293B] p-4 flex flex-col"  style={{ 
+            backgroundImage: "url('https://i.pinimg.com/736x/6e/0f/9d/6e0f9d1967bdd722bf2ae8100ccdfe47.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+             }} >
+          {/* Profile Section */}
+          <div className="flex items-center mb-10 py-3 px-5 -mx-4 -my-4">
+            <img 
+              src="https://i.pinimg.com/736x/81/8a/1b/818a1b89a57c2ee0fb7619b95e11aebd.jpg"
+              alt="Admin"
+              className="w-19 h-19 rounded-full mr-3 border-2 border-[#F39C12]"
+            />
+            <div>
+              <p className="font-semibold text-lg">Admin</p>
+              <p className="text-sm text-gray-400">admin@gmail.com</p>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 space-y-2">
+            <button className="w-full text-left p-3 rounded-lg hover:bg-[#334155] transition text-base font-medium">
+              Dashboard
+            </button>
+            <button 
+              onClick={openTaskView} 
+              className="w-full text-left p-3 rounded-lg bg-[#4F46E5] hover:bg-[#4338CA] transition text-base font-medium"
+            >
+              Tasks
+            </button>
+            <button className="w-full text-left p-3 rounded-lg hover:bg-[#334155] transition text-base font-medium">
+              Users
+            </button>
           </nav>
+
+          {/* Logout */}
+          <button 
+            onClick={logoutUser}
+            className="mt-auto p-3 rounded-lg hover:bg-[#334155] flex items-center justify-center bg-red-600 hover:bg-red-500 transition text-base font-medium"
+          >
+            Logout
+          </button>
         </div>
 
-        {/* Main Content - 80% width */}
-        <div className="w-4/5 p-10 overflow-y-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-7xl font-bold">Task Management</h1>
-            <button className="bg-[#F39C12] hover:bg-[#E05555] text-4xl text-white font-medium py-2 px-6 rounded-lg transition">
-              + New Task
-            </button>
-          </div>
-
-
-
-
-          {/* Full-width form */}
-    <div>
-      <form onSubmit={submitHandler}  className="bg-[#1A1A1A] rounded-xl shadow-lg p-8 text-3xl">
-            <h2 className="text-4xl font-bold mb-6 text-[#F39C12]">Create New Task</h2>
-            
-         <div className="grid grid-cols-2 gap-8 mb-8">
-
-          <div>
-            <label className="block text-4xl font-medium mb-6">Task Title</label>
-
-               <input value = {taskTitle} 
-                   onChange={(e)=>{
-                   setTaskTitle(e.target.value)
-                   }}
-                    type="text" 
-                    placeholder="Make a UI design"
-                    className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-                />
-          </div>
-              
-              <div>
-                <label className="block text-4xl font-medium mb-6">Employer Name</label>
-                <input  value={assignTo}
-                        onChange={(e)=>{
-                        setAssignTo(e.target.value)
-                        }}
-                    
-                  type="text" 
-                  placeholder="Enter employer name"
-                  className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-                />
-              </div>
-            </div>
-
-
-
-            <div className="mb-8">
-              <label className="block text-4xl font-medium mb-6">Description</label>
-              <textarea  
-                  value={taskDescription}
-                        onChange={(e)=>{
-                        setTaskDescription(e.target.value)
-                        }}
-                rows={6}
-                className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-              ></textarea>
-            </div>
-
-            <div className="grid grid-cols-3 gap-8 mb-10">
-
-              <div>
-                <label className="block text-4xl font-medium mb-6">Due Date</label>
-                <input value={taskDate}
-                        onChange={(e)=>{
-                        setTaskDate(e.target.value)
-                        }}
-                  type="date" 
-                  className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-4xl font-medium mb-6">Priority</label>
-                 <select className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-                 value={priority}
-                  onChange={(e)=>{ setPriority(e.target.value) }}>
-                   <option>Low</option>
-                   <option>Medium</option>
-                   <option>High</option>
-                 </select>
-              </div>
-              
-              <div>
-                <label className="block text-4xl font-medium mb-6">Category</label>
-                <input  type='text'   className="w-full bg-[#2A2A2A] border border-[#333] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#F39C12]"
-                  value={category}
-                        onChange={(e)=>{
-                        setCategory(e.target.value)
-                        }}
-                 />
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-4">
-              <button type="button" className="px-6 py-3 border border-[#555] rounded-lg hover:bg-[#2A2A2A] transition">
-                Cancel
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <div className="bg-[#1E293B] h-16 flex items-center justify-between px-8 shadow-md">
+            <div className="text-white font-semibold text-xl">TASK MANAGEMENT</div>
+            <div className="flex space-x-4">
+              <button className="text-white hover:bg-red-700 px-4 py-2 rounded transition text-sm font-medium">
+                <span className="mr-2">⚙️</span> Settings
               </button>
-              <button 
-                type="submit"
-                className="bg-[#F39C12] hover:bg-[#E05555] text-white font-medium px-6 py-3 rounded-lg transition"
-              >
-                Create Task 
+              <button className="text-white hover:bg-red-700 px-4 py-2 rounded transition text-sm font-medium">
+                <span className="mr-2">❓</span> Help
+              </button>
+              <button className="bg-[#F39C12] hover:bg-[#E05555] text-white font-medium py-2 px-6 rounded-lg transition text-sm">
+                + New Task
               </button>
             </div>
-          </form>
-        
-        </div> 
-          
+          </div>
 
-          
+          {/* Scrollable Content */}
+          <div className="flex-1 p-8 overflow-y-auto bg-white">
+            {/* Task Creation Form */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+              <h2 className="text-xl font-semibold mb-6 text-[#F39C12]">Create New Task</h2>
+              
+              <form onSubmit={submitHandler}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label className="block text-base font-medium mb-2 text-gray-800">Task Title</label>
+                    <input 
+                      value={taskTitle}
+                      onChange={(e) => setTaskTitle(e.target.value)}
+                      type="text" 
+                      placeholder="Make a UI design"
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-base font-medium mb-2 text-gray-800">Employer Name</label>
+                    <input 
+                      value={assignTo}
+                      onChange={(e) => setAssignTo(e.target.value)}
+                      type="text" 
+                      placeholder="Enter employer name"
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                    />
+                  </div>
+                </div>
 
+                <div className="mb-6">
+                  <label className="block text-base font-medium mb-2 text-gray-800">Description</label>
+                  <textarea  
+                    value={taskDescription}
+                    onChange={(e) => setTaskDescription(e.target.value)}
+                    rows={4}
+                    className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                  ></textarea>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                  <div>
+                    <label className="block text-base font-medium mb-2 text-gray-800">Due Date</label>
+                    <input 
+                      value={taskDate}
+                      onChange={(e) => setTaskDate(e.target.value)}
+                      type="date" 
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-base font-medium mb-2 text-gray-800">Priority</label>
+                    <select 
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                    >
+                      <option>Low</option>
+                      <option>Medium</option>
+                      <option>High</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-base font-medium mb-2 text-gray-800">Category</label>
+                    <input 
+                      type='text'
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-
-
-
-
-
-
-
-
-
+                <div className="flex justify-end space-x-4">
+                  <button type="button" className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition text-sm font-medium text-gray-800">
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="bg-[#F39C12] hover:bg-[#E05555] text-white font-medium px-6 py-2 rounded-lg transition text-sm"
+                  >
+                    Create Task 
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-
-      <AdminTaskView/>
-
     </div>
   );
 };

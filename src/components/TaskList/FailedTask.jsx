@@ -1,36 +1,44 @@
 import React from 'react'
 
 const FailedTask = ({data}) => {
-
-    const getPriorityColor = () => {
+  const getPriorityColor = () => {
     switch(data.priority?.toLowerCase()) {
       case 'high':
-        return 'bg-red-500'; // Red for high priority
+        return 'bg-red-500';
       case 'medium':
-        return 'bg-orange-500'; // Orange for medium priority
+        return 'bg-orange-500';
       case 'low':
-        return 'bg-yellow-500'; // Yellow for low priority
+        return 'bg-yellow-500';
       default:
-        return 'bg-gray-500'; // Default color if priority isn't specified
+        return 'bg-gray-500';
     }
   };
 
-
   return (
-    <>
-       <div className='h-200 flex-shrink-0 p-5 w-200 bg-[#F8F9FA] rounded-xl border border-[#E9ECEF]'>
-            <div className='flex justify-between items-center py-10'>
-                <h3 className={`${getPriorityColor()} text-white text-4xl px-3 py-1 rounded-lg`}>{data.priority}</h3>
-                <h4 className='text-4xl font-semibold text-[#343A40]'>{data.date}</h4>
-            </div>
-            <h1 className='mt-10 text-5xl font-bold text-[#2C3E50]'>{data.title}</h1>
-            <p className='mt-8 text-4xl text-[#343A40]'>{data.description}</p>
-          <div className='px-60  mt-20  '>
-            <button className='bg-green-500 py-5 px-20 text-2xl rounded-lg'> Failed</button>
-         </div>
-         
-         </div>
-    </>
+    <div className='flex-shrink-0 p-8 w-[32rem] bg-[#F8F9FA] rounded-xl border-2 border-[#E9ECEF] shadow-md'>
+      <div className='flex justify-between items-center pb-6'>
+        <span className={`${getPriorityColor()} text-white text-lg px-4 py-2 rounded-lg`}>
+          {data.priority}
+        </span>
+        <span className='text-xl text-[#343A40] font-semibold'>
+          {data.date}
+        </span>
+      </div>
+      
+      <h2 className='mt-6 text-2xl font-bold text-[#2C3E50]'>
+        {data.title}
+      </h2>
+      
+      <p className='mt-4 text-xl text-[#343A40]'>
+        {data.description}
+      </p>
+      
+      <div className='flex justify-center mt-8'>
+        <button className='bg-green-500 hover:bg-green-600 py-4 px-12 text-xl text-white rounded-lg transition-colors'>
+          Failed
+        </button>
+      </div>
+    </div>
   )
 }
 
