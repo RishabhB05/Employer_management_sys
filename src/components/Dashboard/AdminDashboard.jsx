@@ -2,12 +2,12 @@ import React, { useState, useContext } from 'react';
 import AdminTaskView from '../../pages/AdminTaskView';
 import { AuthContext } from '../../context/AuthProvider';
 
-const AdminDashboard = ({ changeUser, openTaskView }) => {
+const AdminDashboard = ({ changeUser, openTaskView, openUserView }) => {
   const logoutUser = () => {
     localStorage.removeItem('loggedInUser');
     localStorage.removeItem('employeeData');
     window.location.reload();
-  }
+  };
 
   const [userData, setUserData] = useContext(AuthContext);
   const [taskTitle, setTaskTitle] = useState("");
@@ -37,27 +37,32 @@ const AdminDashboard = ({ changeUser, openTaskView }) => {
       return;
     }
 
+    // Assign by email for uniqueness
     const data = userData.employees.map(emp => {
-      if (assignTo === emp.firstName) {
+      if (assignTo === emp.email) {
+        // Update task counts
+        const newTaskCounts = {
+          ...emp.taskCounts,
+          total: (emp.taskCounts?.total || 0) + 1,
+          new: (emp.taskCounts?.new || 0) + 1,
+        };
         return {
           ...emp,
           tasks: [...(emp.tasks || []), task],
-          taskCounts: {
-            ...emp.taskCounts,
-            newTask: (emp.taskCounts?.newTask || 0) + 1
-          }
+          taskCounts: newTaskCounts
         };
       }
       return emp;
     });
 
     setUserData({ employees: data });
-    localStorage.setItem('employees', JSON.stringify(data)); 
+    localStorage.setItem('employees', JSON.stringify(data));
     setTaskTitle('');
     setCategory('');
     setAssignTo('');
     setTaskDate('');
     setTaskDescription('');
+    setPriority('');
   };
 
   return (
@@ -85,16 +90,18 @@ const AdminDashboard = ({ changeUser, openTaskView }) => {
 
           {/* Navigation */}
           <nav className="flex-1 space-y-2">
-            <button className="w-full text-left p-3 rounded-lg hover:bg-[#334155] transition text-base font-medium">
+            <button className="w-full text-left p-3 rounded-lg hover:bg-[#4338CA] transition text-base font-medium">
               Dashboard
             </button>
             <button 
               onClick={openTaskView} 
-              className="w-full text-left p-3 rounded-lg bg-[#4F46E5] hover:bg-[#4338CA] transition text-base font-medium"
+              className="w-full text-left p-3 rounded-lg  hover:bg-[#4338CA] transition text-base font-medium"
             >
               Tasks
             </button>
-            <button className="w-full text-left p-3 rounded-lg hover:bg-[#334155] transition text-base font-medium">
+            <button 
+            onClick={openUserView}
+            className="w-full text-left p-3 rounded-lg hover:bg-[#4338CA] transition text-base font-medium">
               Users
             </button>
           </nav>
@@ -146,14 +153,19 @@ const AdminDashboard = ({ changeUser, openTaskView }) => {
                   </div>
                   
                   <div>
-                    <label className="block text-base font-medium mb-2 text-gray-800">Employer Name</label>
-                    <input 
+                    <label className="block text-base font-medium mb-2 text-gray-800">Employer</label>
+                    <select
                       value={assignTo}
                       onChange={(e) => setAssignTo(e.target.value)}
-                      type="text" 
-                      placeholder="Enter employer name"
                       className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#F39C12] text-sm text-gray-800"
-                    />
+                    >
+                      <option value="">Select employer</option>
+                      {userData?.employees?.map(emp => (
+                        <option key={emp.email} value={emp.email}>
+                          {emp.firstName} {emp.lastName} ({emp.email})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -185,6 +197,7 @@ const AdminDashboard = ({ changeUser, openTaskView }) => {
                       value={priority}
                       onChange={(e) => setPriority(e.target.value)}
                     >
+                      <option value="">Select priority</option>
                       <option>Low</option>
                       <option>Medium</option>
                       <option>High</option>
